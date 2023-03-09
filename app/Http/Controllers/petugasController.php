@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\petugas;
 use App\Models\User;
 use App\Models\Siswa;
+use Illuminate\Console\View\Components\Alert;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 
@@ -75,26 +76,32 @@ class petugasController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Petugas $id)
     {
         return view('admin.petugas.edit', compact('id'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-    }
 
+    public function update(Request $request, Petugas $petugas)
+    {
+        $request->validate([
+            'username' => 'required',
+            'password' => 'required',
+            'nama_petugas' => 'required',
+            'level' => 'required'
+        ]);
+        $petugas = Petugas::where('id', $petugas)->update([
+            'username' => $request->username,
+            'password' => $request->password,
+            'nama_petugas' => $request->nama_petugas,
+            'level' => $request->level
+        ]);
+        return redirect()->route('admin.petugas.index')->with('success', 'Berhasil Diupdate');
+    }
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     *  @param  \App\Models\Petugas  $user
      * @return \Illuminate\Http\Response
      */
     public function destroy(petugas $id)

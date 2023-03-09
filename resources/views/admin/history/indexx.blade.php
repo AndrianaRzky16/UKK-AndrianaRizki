@@ -31,7 +31,6 @@
 
 
                         <h3>History</h3>
-
                         <div class="button-tambah mt-4 mb-3 ml-3">
                             <a href="{{ route('history.export_excel') }}" class="btn btn-success modalbutton">
                                 <small>
@@ -47,6 +46,8 @@
                             <table class="table table-hover" id="table">
                                 <thead>
                                     <tr>
+                                        {{-- <th scope="col">NISN</th> --}}
+                                        <th scope="col">NIS</th>
                                         <th scope="col">Nama</th>
                                         <th scope="col">Tanggal Bayar</th>
                                         <th scope="col">Bulan Dibayar</th>
@@ -59,11 +60,13 @@
                                 <tbody>
                                     @foreach ($pembayaran as $p)
                                         <tr>
+                                            {{-- <td>{{ $p->siswa->nisn }}</td> --}}
+                                            <td>{{ $p->siswa->nis }}</td>
                                             <td>{{ $p->siswa->nama }}</td>
                                             <td>{{ $p->tgl_bayar }}</td>
                                             <td>{{ $p->bulan_dibayar }} - {{ $p->tahun_dibayar }}</td>
                                             {{-- <td></td> --}}
-                                            <td>{{ $p->spp->tahun_masuk }}</td>
+                                            <td>{{ $p->spp->tahun }}</td>
                                             <td>{{ $p->jumlah_bayar }}</td>
                                         </tr>
                                     @endforeach

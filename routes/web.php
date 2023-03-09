@@ -21,7 +21,7 @@ use App\Http\Controllers\pembayaranController;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('auth.login');
 });
 
 Auth::routes();
@@ -50,4 +50,4 @@ Route::get('pembayaran/getData/{nisn}/{berapa}', [PembayaranController::class, '
 
 // EXPORT EXCEL
 Route::get('export/pembayaran', [PembayaranController::class, 'excelExport'])->name('pembayaran.export');
-Route::get('/pembayaran/cetak_pdf', 'PembayaranController@cetak_pdf');
+Route::get('generate-pdf/{nisn}', [PembayaranController::class, 'generatePDF'])->name('print.pdf');

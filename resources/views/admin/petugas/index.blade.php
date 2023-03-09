@@ -12,56 +12,68 @@
 
     <body>
         <div class="container">
-            {{-- @if ($messege = Session::get('success'))
+            <div class="row justify-content-center">
+                <div class="col-md-12">
+
+                    <nav aria-label="breadcrumb">
+                        <ol class="breadcrumb" style="background-color: lightgrey">
+                            <li class="breadcrumb-item" aria-current="page">Home</li>
+                            <li class="breadcrumb-item active" aria-current="page">Petugas</li>
+                        </ol>
+                    </nav>
+
+
+                    {{-- @if ($messege = Session::get('success'))
             <div class="aler alert-danger alert-blok">
                 <button type="button" class="close" data-dismiss="alert">x</button>
                 <strong>$messege</strong>
             @endif --}}
-            <h1>Index Petugas</h1>
-            <div class="container">
-                <a href="{{ route('employ.create') }}" class="btn btn-success">
-                    <small>
-                        <i class="fa fa-plus" aria-hidden="true"></i>
-                    </small></a>
-                <br>
-                <br>
-                <table class="table table-bordered" id="table">
-                    <thead>
-                        <th>NO</th>
-                        <th>Nama</th>
-                        <th>Level</th>
-                        <th>Email</th>
-                        <th>Aksi</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach ($data as $index => $data)
-                            <tr>
-                                <td>{{ $index + 1 }}</td>
-                                <td>{{ $data->username }}</td>
-                                <td>{{ $data->level }}</td>
-                                <td>{{ $data->email }}</td>
-                                <td>
+                    <h1>Index Petugas</h1>
 
-                                    <form action="{{ route('employ.destroy', $data->id) }}" method="POST"
-                                        onsubmit="return confirm('Yakin akan di hapus?')">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button type="submit" class="btn btn-danger mt-2">
-                                            <i class="fa fa-trash" aria-hidden="true"></i>
-                                        </button>
-                                        <a href="{{ route('employ.edit', $data->id) }}" style="color: white"
-                                            class="btn btn-warning mb-2"><i class="fa fa-pencil-square"></i></a>
-                                    </form>
+                    <div class="container">
+                        <a href="{{ route('employ.create') }}" class="btn btn-success">
+                            <small>
+                                <i class="fa fa-plus" aria-hidden="true"></i>
+                            </small></a>
+                        <br>
+                        <br>
+                        <table class="table table-bordered" id="table">
+                            <thead>
+                                <th>NO</th>
+                                <th>Nama</th>
+                                <th>Level</th>
+                                <th>Email</th>
+                                <th>Aksi</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach ($data as $index => $data)
+                                    <tr>
+                                        <td>{{ $index + 1 }}</td>
+                                        <td>{{ $data->username }}</td>
+                                        <td>{{ $data->level }}</td>
+                                        <td>{{ $data->email }}</td>
+                                        <td>
 
-                                </td>
+                                            <form action="{{ route('employ.destroy', $data->id) }}" method="POST"
+                                                onsubmit="return confirm('Yakin akan di hapus?')">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button type="submit" class="btn btn-danger mt-2">
+                                                    <i class="fa fa-trash" aria-hidden="true"></i>
+                                                </button>
+                                                <a href="{{ route('employ.edit', $data->id) }}" style="color: white"
+                                                    class="btn btn-warning mb-2"><i class="fa fa-pencil-square"></i></a>
+                                            </form>
 
-                            </tr>
-                        @endforeach
-                    </tbody>
-                </table>
-            </div>
-        </div>
+                                        </td>
+
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
     </body>
 
     </html>

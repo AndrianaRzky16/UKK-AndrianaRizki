@@ -22,6 +22,7 @@
 
 
     @yield('js')
+    <script src="{{ asset('js/bootstrap.min.js') }}" defer></script>
     <script src="{{ asset('js/app.js') }}" defer></script>
 
     @yield('select2')
@@ -47,19 +48,23 @@
     <link rel="stylesheet" href="https://cdn.datatables.net/1.10.24/css/dataTables.bootstrap4.min.css">
     <script type="text/javascript" src="assets/DataTables/media/js/jquery.js"></script>
     <script type="text/javascript" src="assets/DataTables/media/js/jquery.dataTables.js"></script>
-    <link rel="stylesheet" type="text/css" href="assets/css/bootstrap.css">
+    <link rel="stylesheet" type="text/css" href="assets/bootstrap.css">
     <link rel="stylesheet" type="text/css" href="assets/DataTables/media/css/jquery.dataTables.css">
     <link rel="stylesheet" type="text/css" href="assets/DataTables/media/css/dataTables.bootstrap.css">
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+    <script src="https://kit.fontawesome.com/6fd93a0d6e.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="sweetalert2.min.js"></script>
+    <link rel="stylesheet" href="sweetalert2.min.css">
 </head>
 
 <body>
     <div id="app">
         <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
             <div class="container">
-                <a class="navbar-brand" href="{{ url('/') }}">
-                    {{ config('app.name', 'Laravel') }}
+                <a class="navbar-brand" href="{{ url('/home') }}">
+                    <i class="fas fa-user-astronaut"></i> Spp Al-Huda
                 </a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
                     data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
@@ -83,11 +88,11 @@
                                 </li>
                             @endif
 
-                            @if (Route::has('register'))
+                            {{-- @if (Route::has('register'))
                                 <li class="nav-item">
                                     <a class="nav-link" href="{{ route('register') }}">{{ __('Register') }}</a>
                                 </li>
-                            @endif
+                            @endif --}}
                         @else
                             @if (Auth::user()->level == 'admin')
                                 <a href="/spp" class="navbar-brand">Spp</a>
@@ -95,22 +100,21 @@
                                 <a href="/siswa" class="navbar-brand">Siswa</a>
                                 <a href="/employ" class="navbar-brand">Akun</a>
                                 <a href="/pembayaran" class="navbar-brand">Pembayaran</a>
-                                <a href="/history" class="navbar-brand">Laporan Pembayaran</a>
+                                {{-- <a href="/history" class="navbar-brand">Laporan Pembayaran</a> --}}
                             @endif
                             @if (Auth::user()->level == 'petugas')
                                 <a href="/pembayaran" class="navbar-brand">Pembayaran</a>
-                                <a href="/history" class="navbar-brand">Laporan Pembayaran</a>
+                                {{-- <a href="/history" class="navbar-brand">Laporan Pembayaran</a> --}}
                             @endif
                             @if (Auth::user()->level == 'siswa')
                                 <a href="/history" class="navbar-brand">Laporan Pembayaran</a>
                             @endif
-                            <li class="nav-item dropdown">
-                                <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button"
-                                    data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+                            <div class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" type="button" id="dropdownMenuButton"
+                                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                     {{ Auth::user()->name }}
                                 </a>
-
-                                <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+                                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                                     <a class="dropdown-item" href="{{ route('logout') }}"
                                         onclick="event.preventDefault();
                                                      document.getElementById('logout-form').submit();">
@@ -121,8 +125,7 @@
                                         @csrf
                                     </form>
                                 </div>
-                            </li>
-                        @endguest
+                            @endguest
                     </ul>
                 </div>
             </div>

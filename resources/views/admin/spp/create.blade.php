@@ -19,10 +19,10 @@
                         <form action="{{ route('spp.store') }}" method="POST">
                             @csrf
                             <div class="form-group">
-                                <strong>Tahun Masuk</strong>
-                                <input type="text" name="tahun_masuk" class="form-control">
-                                <strong>Tahun Keluar</strong>
-                                <input type="text" name="tahun_keluar" class="form-control">
+                                <strong>Tahun </strong>
+                                <input type="text" name="tahun" class="form-control">
+                                {{-- <strong>Total Bulan</strong>
+                                <input type="text" name="total_bulan" class="form-control"> --}}
                                 <strong>Nominal</strong>
                                 <input type="number" name="nominal" class="form-control">
                             </div>

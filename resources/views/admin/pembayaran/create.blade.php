@@ -89,7 +89,7 @@
                                         <option value="10">10 Bulan</option>
                                         <option value="11">11 Bulan</option>
                                         <option value="12">12 Bulan</option>
-                                        <option value="13">13 Bulan</option>
+                                        {{-- <option value="13">13 Bulan</option>
                                         <option value="14">14 Bulan</option>
                                         <option value="15">15 Bulan</option>
                                         <option value="16">16 Bulan</option>
@@ -112,7 +112,7 @@
                                         <option value="33">33 Bulan</option>
                                         <option value="34">34 Bulan</option>
                                         <option value="35">35 Bulan</option>
-                                        <option value="36">36 Bulan</option>
+                                        <option value="36">36 Bulan</option> --}}
                                     </select>
                                 </div>
 
@@ -139,9 +139,16 @@
                                     <label for="jumlah_bayar">Jumlah Bayar :</label>
                                     <input type="number" class="form-control" name="jumlah_bayar" id="jumlah_bayar">
                                 </div>
-                        </div>
 
-                        {{-- <div class="form-group">
+                                <div class="form-group">
+                                    <label for="jumlah_bayar">Kembalian :</label>
+                                    <input type="number" class="form-control" name="kembalian" id="kembalian" disabled>
+                                </div>
+                        </div>
+                    </div>
+
+
+                    {{-- <div class="form-group">
                                     <label for="jumlah_bayar">jumlah_bayar</label>
                                     <input type="text" min="20000" maxlength="11"
                                         oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
@@ -157,31 +164,31 @@ invalid
                                         </div>
                                     @enderror --}}
 
-                        @if (Session::get('tjumlah_bayar'))
-                            <div class="error p-2" style="color: red">
-                                {{ Session::get('tnominal') }}
-                            </div>
-                        @endif
-
-                    </div>
-
-                    @if ($siswa->count() == 0)
-                        {{-- <div class="form-group">
-                            <a href="{{ route('pembayaran.index') }}" class="btn btn-dark">
-                                Back <i class="fa fa-fire-extinguisher" aria-hidden="true"></i>
-                            </a>
-                        </div> --}}
-                    @else
-                        <div class="form-group">
-                            <button type="submit" id="buttonSubmit" class="btn btn-primary">
-                                Simpan
-                            </button>
+                    @if (Session::get('tjumlah_bayar'))
+                        <div class="error p-2" style="color: red">
+                            {{ Session::get('tnominal') }}
                         </div>
                     @endif
-                    </form>
+
                 </div>
+
+                @if ($siswa->count() == 0)
+                    <div class="form-group">
+                        <a href="{{ route('pembayaran.index') }}" class="btn btn-dark">
+                            Back <i class="fa fa-fire-extinguisher" aria-hidden="true"></i>
+                        </a>
+                    </div>
+                @else
+                    <div class="form-group">
+                        <button type="submit" id="buttonSubmit" class="btn btn-primary">
+                            Simpan
+                        </button>
+                    </div>
+                @endif
+                </form>
             </div>
         </div>
+    </div>
     </div>
     </div>
     </div>
@@ -253,6 +260,16 @@ invalid
         });
     </script>
 
+    <script type="text/javascript">
+        $(document).ready(function() {
+            $("#nominal, #jumlah_bayar").keyup(function() {
+                var harga = $("#nominal").val();
+                var jumlah = $("#jumlah_bayar").val();
 
+                var total = parseInt(jumlah) - parseInt(harga);
+                $("#kembalian").val(total);
+            });
+        });
+    </script>
 
 @endsection

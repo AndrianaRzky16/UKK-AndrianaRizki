@@ -11,8 +11,7 @@ class Spp extends Model
     protected $table = 'spp';
     protected $primaryKey = 'id_spp';
     protected $fillable = [
-        'tahun_masuk',
-        'tahun_keluar',
+        'tahun',
         'nominal',
     ];
 }

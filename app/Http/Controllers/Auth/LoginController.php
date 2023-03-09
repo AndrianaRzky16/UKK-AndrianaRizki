@@ -58,7 +58,7 @@ class LoginController extends Controller
                         break;
 
                     case 'petugas':
-                        return redirect()->route('admin.dashboard');
+                        return redirect()->route('home');
                         break;
 
                     default:

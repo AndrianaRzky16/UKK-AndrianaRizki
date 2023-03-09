@@ -80,6 +80,7 @@ class siswaController extends Controller
             'name' => $request->nama,
             'email' => $request->nis . '@gmail.com',
             'level' => 'siswa',
+            'nisn' => $request->nisn,
             'password' => Hash::make($request->nis),
         ]);
         if ($request) {
@@ -130,10 +131,28 @@ class siswaController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $nisn)
+    public function update(Request $request, Siswa $nisn)
     {
-        dd($nisn);
-        Siswa::where('nisn', $nisn)->update([
+        $user = User::where('name', $nisn->nama)->first();
+        // dd($user);
+        $request->validate([
+            'nisn' => 'required | string',
+            'nis' => 'required | string',
+            'nama' => 'required',
+            'id_kelas' => 'required',
+            'alamat' => 'required',
+            'no_telpon' => 'required',
+            'id_spp' => 'required',
+        ]);
+
+        $user->update([
+            'name' => $request->nama,
+            'email' => $request->nis . '@gmail.com',
+            'level' => 'siswa',
+            'password' => Hash::make($request->nis),
+        ]);
+
+        $nisn->update([
             'nisn' => $request->nisn,
             'nis' => $request->nis,
             'nama' => $request->nama,
@@ -141,18 +160,9 @@ class siswaController extends Controller
             'alamat' => $request->alamat,
             'no_telpon' => $request->no_telpon,
             'id_spp' => $request->id_spp,
-
         ]);
-        // dd($siswa);
-        $email = $request->nis . '@smkwikrama.com';
-        User::where('id', $nisn)->update([
-            'name' => $request->nama,
-            'password' => $request->nisn,
-            'level' => 'siswa',
-            'email' => $email,
 
-        ]);
-        return redirect()->route('siswa.index');
+        return redirect()->route('admin.siswa.index')->with('success', 'data berhasil diedit');
     }
 
     /**

@@ -17,14 +17,14 @@ class pembayaranExport implements FromCollection, WithHeadings
     {
         return Pembayaran::join('siswa', 'siswa.nisn', '=', 'pembayaran.nisn')
             ->join('spp', 'spp.id_spp', '=', 'siswa.id_spp')
-            ->select('nama', 'tgl_bayar', 'bulan_dibayar', 'tahun_dibayar', 'jumlah_bayar')
+            ->select('nis', 'nama', 'tgl_bayar', 'bulan_dibayar', 'tahun_dibayar', 'jumlah_bayar')
             ->get();
     }
 
     public function headings(): array
     {
         return [
-            'Nama', 'Tanggal Bayar', 'Bulan Dibayar', 'Tahun Dibayar', 'Jumlah Bayar'
+            'NIS', 'Nama', 'Tanggal Bayar', 'Bulan Dibayar', 'Tahun Dibayar', 'Jumlah Bayar'
         ];
     }
 

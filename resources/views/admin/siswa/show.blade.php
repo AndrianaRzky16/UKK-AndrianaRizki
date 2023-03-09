@@ -62,7 +62,7 @@
                                                     @endforeach
                                                 </tr>
                                                 <tr>
-                                                    <th style="text-align: right; vertical-align: middle;">Jumlah Bayar :
+                                                    <th style="text-align: center; vertical-align: middle;">Jumlah Bayar :
                                                     </th>
                                                     <th>{{ $siswa->spp->nominal * $i }}</th>
                                                 </tr>

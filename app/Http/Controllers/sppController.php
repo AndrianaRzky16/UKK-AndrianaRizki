@@ -37,8 +37,7 @@ class sppController extends Controller
     public function store(Request $request)
     {
         Spp::create([
-            'tahun_masuk' => $request->tahun_masuk,
-            'tahun_keluar' => $request->tahun_keluar,
+            'tahun' => $request->tahun,
             'nominal' => $request->nominal,
         ]);
         return redirect('spp')->with('success', 'Berhasil di input');
@@ -76,14 +75,12 @@ class sppController extends Controller
     public function update(Request $request, Spp $spp)
     {
         $request->validate([
-            'tahun_masuk' => 'required | string',
-            'tahun_keluar' => 'required | string',
+            'tahun' => 'required | string',
             'nominal' => 'required | string'
         ]);
 
         $spp->update([
-            'tahun_masuk' => $request->tahun_masuk,
-            'tahun_keluar' => $request->tahun_keluar,
+            'tahun' => $request->tahun,
             'nominal' => $request->nominal,
         ]);
 

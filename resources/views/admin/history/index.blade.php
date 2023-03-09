@@ -22,7 +22,7 @@
                         <td>{{ $p->tgl_bayar }}</td>
                         <td>{{ $p->bulan_dibayar }}</td>
                         <td>{{ $p->tahun_dibayar }}</td>
-                        <td>{{ $p->spp->tahun_masuk }}</td>
+                        <td>{{ $p->spp->tahun }}</td>
                         <td>{{ $p->jumlah_bayar }}</td>
                     </tr>
                 @endforeach

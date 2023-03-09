@@ -36,12 +36,13 @@
                                 <select name="id_spp" id="id_spp" class="form-control">
                                     <option value="" selected>Pilih Spp</option>
                                     @foreach ($spp as $s)
-                                        <option value="{{ $s->id_spp }}">{{ $s->nominal }} || {{ $s->tahun_masuk }} -
-                                            {{ $s->tahun_keluar }}</option>
+                                        <option value="{{ $s->id_spp }}">{{ $s->nominal }} || {{ $s->tahun }}
                                     @endforeach
                                 </select>
                                 <strong>Alamat</strong>
                                 <input type="text" name="alamat" class="form-control">
+                                {{-- <strong>Tanggal Masuk</strong>
+                                <input type="text" name="id_masuk" class="form-control"> --}}
                                 <strong>No Telpon</strong>
                                 <input type="number" name="no_telpon" class="form-control">
                             </div>

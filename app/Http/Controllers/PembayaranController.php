@@ -12,7 +12,9 @@ use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
-use PhpOffice\PhpSpreadsheet\Writer\Pdf;
+use Maatwebsite\Excel\Facades\Excel;
+// use PhpOffice\PhpSpreadsheet\Writer\Pdf;
+use PDF;
 
 class PembayaranController extends Controller
 {
@@ -39,9 +41,11 @@ class PembayaranController extends Controller
             'jumlah_bayar' => 'required|numeric',
         ]);
 
+
+        // dd($request->bayar_berapa);
         for ($i = 0; $i < $request->bayar_berapa; $i++) {
             $idPetugas = Petugas::where('email', '=', auth()->user()->email)->first();
-            $bulan = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
+            $bulan = ['januari', 'februari', 'maret', 'april', 'mei', 'juni', 'juli', 'agustus', 'september', 'oktober', 'november', 'desember'];
 
             $siswa = Siswa::where('nisn', '=', $request->nisn)->first();
             $spp = Spp::where('id_spp', '=', $siswa->id_spp)->first();
@@ -49,7 +53,7 @@ class PembayaranController extends Controller
 
             if ($pembayaran->isEmpty()) {
                 $bln = 6;
-                $tahun = substr($spp->tahun_masuk, 0, 4);
+                $tahun = substr($spp->tahun, 0, 4);
             } else {
                 $pembayaran = Pembayaran::where('nisn', '=', $siswa->nisn)
                     ->orderBy('id_pembayaran', 'Desc')->latest()
@@ -64,30 +68,32 @@ class PembayaranController extends Controller
                     $bln = $bln + 1;
                     $tahun = $pembayaran->tahun_dibayar;
                 }
+
+                if ($pembayaran->tahun_dibayar == substr($spp->tahun, -4, 4) && $pembayaran->bulan_dibayar == 'mei') {
+                    return back()->with('error', 'sudah lunas');
+                }
             }
 
-            if ($pembayaran->tahun_dibayar == substr($spp->tahun_keluar, -4, 4) && $pembayaran->bulan_dibayar == 'juli') {
-                return back()->with('error', 'sudah lunas');
+            if ($request->jumlah_bayar < $spp->nominal) {
+                return back()->with('tjumlah_bayar', 'Uang yang dimasukan tidak sesuai');
             }
 
-            if ($request->jumlah_bayar < $request->total) {
-                return back()->with('error', 'Uang yang dimasukan tidak sesuai');
-            }
-            // dd($tahun_keluar);
-
-            Pembayaran::create([
-                // 'id_pembayaran' => $request->id_pembayaran,
+            $pembayaranSimpan = Pembayaran::create([
                 'id_petugas' => Auth::user()->id,
                 'nisn' => $request->nisn,
-                'tgl_bayar' => Carbon::now()->timezone('Asia/jakarta'),
+                'tgl_bayar' => Carbon::now()->timezone('asia/jakarta'),
                 'bulan_dibayar' => $bulan[$bln],
                 'tahun_dibayar' => $tahun,
                 'id_spp' => $spp->id_spp,
-                'jumlah_bayar' => $request->jumlah_bayar,
+                'jumlah_bayar' => $request->jumlah_bayar
             ]);
         }
 
-        return redirect()->route('pembayaran.index')->with('success', 'data berhasil masuk');;
+        if ($pembayaranSimpan) {
+            return redirect()->route('pembayaran.index')->with('success', 'data berhasil masuk');
+        } else {
+            return redirect()->back()->with('error', 'data gagal masuk');
+        }
     }
 
     public function edit(Pembayaran $pembayaran)
@@ -116,6 +122,11 @@ class PembayaranController extends Controller
         }
     }
 
+    public function export_excel()
+    {
+        return Excel::download(new PembayaranExport, 'spp.xlsx');
+    }
+
     public function show(Pembayaran $pembayaran)
     {
         return view('admin.pembayaran.show', compact('pembayaran'));
@@ -137,12 +148,25 @@ class PembayaranController extends Controller
         return $this->download(new PembayaranExport, 'users.xlsx');
     }
 
-    public function cetak_pdf()
+    public function generatePDF($nisn)
     {
-        $pembayaran = Pembayaran::all();
-
-        $pdf = Pdf::loadview('pembayaran_pdf', ['pembayaran' => $pembayaran]);
-        return $pdf->stream();
+        $data = Pembayaran::where('nisn', '=', $nisn)->first();
+        // dd($data);
+        $siswa = Siswa::where('nisn', '=', $nisn)->first();
+        // dd($siswa);
+        $spp = Spp::where('id_spp', '=', $siswa->id_spp)->first();
+        // dd($spp);
+        $invoice = Pembayaran::where('created_at', '=', $data->created_at)->get();
+        // dd($invoice);
+        $pdf = PDF::loadview('myPDF', compact('data', 'siswa', 'spp', 'invoice'));
+        // dd($pdf);
+        return $pdf->download('struk.pdf');
+        // return view('myPDF', compact('data', 'siswa', 'invoice', 'spp'));
+        // if ($pdf) {
+        //     return redirect()->route('pembayaran.index')->with('success', 'data berhasil masuk');
+        // } else {
+        //     return redirect()->back()->with('error', 'gagal');
+        // }
     }
 
     public function riwayat()
